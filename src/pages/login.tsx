@@ -1,4 +1,4 @@
 
-export function Login () {
-    return ('Hello World');
+export default function Login () {
+    return ('Hello World Login');
 }
