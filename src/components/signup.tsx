@@ -33,7 +33,7 @@ const SignupPage: React.FC = () => {
       }
 
     } catch (error: any) {
-      console.error(error.message);
+      console.error(error);
     }
   };
 
