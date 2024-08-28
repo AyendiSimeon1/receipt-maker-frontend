@@ -12,7 +12,7 @@ function App() {
   return (
     <>
     <Router>
-    <Link to="/">Home</Link>
+   
         <Routes>
           
           <Route path="/login" element={<Login />} />

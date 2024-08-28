@@ -1,16 +1,25 @@
 // src/components/AdminPanel.tsx
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../redux/store';
-import { Product, Purchase } from '../types';
-import { makePurchase } from '../redux/inventorySlice';
-import ProductList from './ProductList';
-import PurchaseForm from './PurchaseForm';
-import Receipt from './Receipt';
+// import { RootState } from '../redux/store';
+// import { Product, Purchase } from '../types';
+// import { makePurchase } from '../redux/inventorySlice';
+import ProductList from './productList';
+import PurchaseForm from './purchaseForm';
+import Receipt from './receipt';
+
+
+interface Product {
+
+}
+
+interface Purchase {
+
+}
 
 const AdminPanel: React.FC = () => {
   const dispatch = useDispatch();
-  const products = useSelector((state: RootState) => state.inventory.products);
+  // const products = useSelector((state: RootState) => state.inventory.products);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [lastPurchase, setLastPurchase] = useState<Purchase | null>(null);
 
@@ -32,7 +41,7 @@ const AdminPanel: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#f8f5f1] flex flex-col p-4">
       <header className="w-full max-w-4xl mx-auto flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Razor Store Admin</h1>
+        <h1 className="text-2xl font-bold">Store Admin</h1>
         <button className="bg-[#ffd495] text-black px-4 py-2 rounded-md">Logout</button>
       </header>
       

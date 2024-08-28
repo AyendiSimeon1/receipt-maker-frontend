@@ -1,100 +1,114 @@
 import React, { useState, FormEvent } from 'react';
-//import { useDispatch } from 'react-redux';
-// import { AppDispatch } from '../store'; // Assume you have a store.ts file
-// import { signup } from '../redux/actions'; // Assume this action exists
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+interface FormData {
+  username: string;
+  email: string;
+  password: string;
+}
 
 const SignupPage: React.FC = () => {
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
-  //const dispatch: AppDispatch = useDispatch();
+  // Initialize formData with default values to avoid null or undefined
+  const [formData, setFormData] = useState<FormData>({
+    username: '',
+    email: '',
+    password: ''
+  });
+  const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("Passwords don't match");
-      return;
+
+    
+
+    try {
+      const url = '127.0.0.1:3004/auth/signup'; 
+      const response = await axios.post('http://127.0.0.1:3004/auth/signup', formData);
+
+      if (response.status === 200) { 
+        console.log('Signup successful');
+        navigate('/login'); 
+      }
+
+    } catch (error: any) {
+      console.error(error.message);
     }
-    //dispatch(signup(name, email, password));
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
   return (
     <div className="min-h-screen bg-[#f8f5f1] flex flex-col justify-center items-center p-4">
       <header className="w-full max-w-md flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Razor</h1>
-        <div>
-          <button className="mr-4">Login</button>
-          <button className="bg-[#ffd495] text-black px-4 py-2 rounded-md">Request Demo</button>
-        </div>
-      </header>
-      
-      <main className="bg-white rounded-3xl shadow-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4">Agent Signup</h2>
-        <p className="mb-6">Create your account to get started</p>
         
+      </header>
+
+      <main className="bg-white rounded-3xl shadow-lg p-8 w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-4">User Signup</h2>
+        <p className="mb-6">Create your account to get started</p>
+
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <input
               type="text"
-              placeholder="Full Name"
+              name="username"
+              placeholder="Username"
               className="w-full p-2 border rounded"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={formData.username}
+              onChange={handleChange}
               required
             />
           </div>
           <div className="mb-4">
             <input
               type="email"
+              name="email"
               placeholder="Email Address"
               className="w-full p-2 border rounded"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
               required
             />
           </div>
           <div className="mb-4 relative">
             <input
-              type="password"
+              type={passwordVisible ? 'text' : 'password'}
+              name="password"
               placeholder="Create Password"
               className="w-full p-2 border rounded"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={handleChange}
               required
             />
-            <button type="button" className="absolute right-2 top-2 text-gray-500">Hide</button>
+            <button
+              type="button"
+              onClick={() => setPasswordVisible(!passwordVisible)}
+              className="absolute right-2 top-2 text-gray-500"
+            >
+              {passwordVisible ? 'Hide' : 'Show'}
+            </button>
           </div>
-          <div className="mb-6 relative">
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              className="w-full p-2 border rounded"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-            <button type="button" className="absolute right-2 top-2 text-gray-500">Hide</button>
-          </div>
+
           <button type="submit" className="w-full bg-[#ffd495] text-black p-2 rounded">
             Sign Up
           </button>
         </form>
-        
-        <div className="mt-6 text-center">
-          <p className="text-gray-500 mb-4">— Or Sign up with —</p>
-          <div className="flex justify-center space-x-4">
-            <button className="p-2 border rounded">Google</button>
-            <button className="p-2 border rounded">Apple ID</button>
-            <button className="p-2 border rounded">Facebook</button>
-          </div>
-        </div>
-        
+
         <p className="mt-6 text-center text-sm">
           Already have an account? <a href="#" className="text-blue-600">Login</a>
         </p>
       </main>
-      
+
       <footer className="mt-8 text-sm text-gray-500">
         Copyright @wework 2022 | Privacy Policy
       </footer>
