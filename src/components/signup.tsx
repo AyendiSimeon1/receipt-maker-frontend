@@ -27,7 +27,7 @@ const SignupPage: React.FC = () => {
       const url = '127.0.0.1:3004/auth/signup'; 
       const response = await axios.post('http://127.0.0.1:3004/auth/signup', formData);
 
-      if (response.status === 200) { 
+      if (response.status === 201) { 
         console.log('Signup successful');
         navigate('/login'); 
       }
