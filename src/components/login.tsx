@@ -1,18 +1,45 @@
 import React, { useState, FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../store'; // Ensure store.ts exports AppDispatch
-import { loginSuccess } from '../redux/authSlice'; // Ensure authSlice exports loginSuccess
+import { AppDispatch } from '../store';
+import { loginSuccess } from '../redux/authSlice';
+import axios from 'axios';
+
+interface FormData {
+  email: string;
+  password: string;
+}
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
-  const dispatch: AppDispatch = useDispatch();
+  const [formData, setFormData] = useState<FormData>({
+    email: '',
+    password: ''
+  });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const navigate = useNavigate();
+  const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // dispatch(loginSuccess({ email, password }));
+    try {
+      const response = await axios.post('http://localhost:3004/auth/signin', formData);
+      if (response.status === 200) {
+        console.log('Login Successful');
+        dispatch(loginSuccess(response.data)); // Assuming the response contains user data
+        navigate('/admin');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value
+    }));
   };
 
   const handlePasswordVisibility = () => {
@@ -33,20 +60,22 @@ const LoginPage: React.FC = () => {
           <div className="mb-4">
             <input
               type="email"
+              name="email"
               placeholder="Enter Email"
               className="w-full p-2 border rounded"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleInputChange}
               required
             />
           </div>
           <div className="mb-4 relative">
             <input
               type={passwordVisible ? 'text' : 'password'}
+              name="password"
               placeholder="Passcode"
               className="w-full p-2 border rounded"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={handleInputChange}
               required
             />
             <button
