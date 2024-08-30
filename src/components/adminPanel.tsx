@@ -27,19 +27,21 @@ export interface Purchase {
 const API_BASE_URL = 'http://localhost:3004';
 
 const AdminPanel: React.FC = () => {
-  const dispatch = useDispatch();
-  const products = useSelector((state: RootState) => state.product.products);
+  const dispatch = useAppDispatch();
+  const { products } = useSelector((state: RootState) => state.product);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [lastPurchase, setLastPurchase] = useState<Purchase | null>(null);
   const [lastProduct, setLastProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const state = useSelector((state: RootState) => state);
 
   console.log({ 'Data stored': products });
+  console.log('Entire Redux State:', state);
 
-  // useEffect(() => {
-  //   dispatch(fetchProducts());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   const handleCreateProduct = async (product: Product) => {
     try {
