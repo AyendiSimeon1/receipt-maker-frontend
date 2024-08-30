@@ -105,7 +105,7 @@ const AdminPanel: React.FC = () => {
           <PurchaseForm
             selectedProduct={selectedProduct}
             onPurchase={handlePurchase}
-            onCreateProduct={handleCreateProduct}
+            // onCreateProduct={handleCreateProduct}
           />
 
         </div>
