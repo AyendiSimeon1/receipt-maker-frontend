@@ -1,38 +1,71 @@
-// src/components/AdminPanel.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// import { RootState } from '../redux/store';
-// import { Product, Purchase } from '../types';
-// import { makePurchase } from '../redux/inventorySlice';
-import ProductList from './productList';
-import PurchaseForm from './purchaseForm';
-import Receipt from './receipt';
+import { RootState } from '../store';
+import { addProduct, updateProduct } from '../redux/productSlice';
+import ProductList from '../components/productList';
+import PurchaseForm from '../components/purchaseForm';
+import Receipt from '../components/receipt';
+import axios from 'axios';
+import { fetchProducts } from '../redux/productSlice';
+import { useAppDispatch } from '../store';
 
-
-interface Product {
-
+export interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  quantity: number;
 }
 
-interface Purchase {
-
+export interface Purchase {
+  _id: string;
+  productId: string;
+  quantity: number;
+  totalPrice: number;
+  date: string;
 }
+
+const API_BASE_URL = 'http://localhost:3004';
 
 const AdminPanel: React.FC = () => {
   const dispatch = useDispatch();
-  // const products = useSelector((state: RootState) => state.inventory.products);
+  const products = useSelector((state: RootState) => state.product.products);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [lastPurchase, setLastPurchase] = useState<Purchase | null>(null);
+  const [lastProduct, setLastProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  console.log({ 'Data stored': products });
+
+  // useEffect(() => {
+  //   dispatch(fetchProducts());
+  // }, [dispatch]);
+
+  const handleCreateProduct = async (product: Product) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/createProduct`, product);
+      if (response.status === 201) {
+        console.log('Product created successfully');
+        dispatch(addProduct(response.data));
+        setLastProduct(response.data);
+      }
+    } catch (error) {
+      console.error(error);
+      setError('Failed to create product. Please try again later.');
+    }
+  };
 
   const handlePurchase = (quantity: number) => {
     if (selectedProduct) {
       const purchase: Purchase = {
-        id: Date.now().toString(),
-        productId: selectedProduct.id,
-        quantity,
+        _id: Date.now().toString(),
+        productId: selectedProduct._id,
+        quantity: quantity,
         totalPrice: selectedProduct.price * quantity,
         date: new Date().toISOString(),
       };
-      dispatch(makePurchase(purchase));
+      // Dispatch the purchase action if needed
+      // dispatch(makePurchase(purchase));
       setLastPurchase(purchase);
       setSelectedProduct(null);
     }
@@ -47,20 +80,33 @@ const AdminPanel: React.FC = () => {
       
       <main className="bg-white rounded-3xl shadow-lg p-8 w-full max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold mb-4">Inventory Management</h2>
+
+        {loading && (
+          <div className="flex justify-center items-center">
+            <div className="w-12 h-12 border-4 border-t-4 border-[#ffd495] border-solid rounded-full animate-spin"></div>
+          </div>
+        )}
         
+        {error && (
+          <div className="bg-red-100 text-red-800 p-4 mb-4 rounded">
+            {error}
+          </div>
+        )}
+
         <div className="grid grid-cols-2 gap-8">
-          <ProductList 
-            products={products} 
-            onSelectProduct={setSelectedProduct} 
+          <ProductList
+            products={products}
+            onSelectProduct={setSelectedProduct}
           />
-          <PurchaseForm 
-            selectedProduct={selectedProduct} 
-            onPurchase={handlePurchase} 
+          <PurchaseForm
+            selectedProduct={selectedProduct}
+            onPurchase={handlePurchase}
+            onCreateProduct={handleCreateProduct}
           />
         </div>
         
         {lastPurchase && (
-          <Receipt purchase={lastPurchase} product={products.find(p => p.id === lastPurchase.productId)} />
+          <Receipt purchase={lastPurchase} />
         )}
       </main>
       

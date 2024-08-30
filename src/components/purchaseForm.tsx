@@ -1,22 +1,50 @@
-
-// src/components/PurchaseForm.tsx
 import React, { useState } from 'react';
-export interface Product {
-    id: string;
-    name: string;
-    price: number;
-    quantity: number;
-  }
-  
 
+type Product = {
+  _id: string
+  name: string
+  price: number
+  quantity: number
+}
 
 interface PurchaseFormProps {
   selectedProduct: Product | null;
   onPurchase: (quantity: number) => void;
+  onCreateProduct: (product: Product) => void; // Updated to accept a product parameter
 }
 
-const PurchaseForm: React.FC<PurchaseFormProps> = ({ selectedProduct, onPurchase }) => {
+const PurchaseForm: React.FC<PurchaseFormProps> = ({ selectedProduct, onPurchase, onCreateProduct }) => {
   const [quantity, setQuantity] = useState(1);
+
+  // State for creating a new product
+  const [newProduct, setNewProduct] = useState({
+    name: '',
+    price: 0,
+    quantity: 0,
+  });
+
+  // Handle product creation input change
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewProduct({
+      ...newProduct,
+      [name]: name === 'price' || name === 'quantity' ? Number(value) : value,
+    });
+  };
+
+  // Handle create product form submission
+  const handleCreateProduct = () => {
+    if (newProduct.name && newProduct.price > 0 && newProduct.quantity > 0) {
+      const productToCreate = {
+        _id: Date.now().toString(), // Temporary ID; replace with actual logic if needed
+        ...newProduct,
+      };
+      onCreateProduct(productToCreate);
+      setNewProduct({ name: '', price: 0, quantity: 0 }); // Clear form after submission
+    } else {
+      alert('Please fill in all fields correctly.');
+    }
+  };
 
   if (!selectedProduct) return null;
 
@@ -37,6 +65,42 @@ const PurchaseForm: React.FC<PurchaseFormProps> = ({ selectedProduct, onPurchase
         className="w-full bg-[#ffd495] text-black p-2 rounded mt-2"
       >
         Purchase
+      </button>
+
+      <hr className="my-4" />
+
+      <h3 className="text-xl font-semibold mb-2">Create New Product</h3>
+      <input
+        type="text"
+        name="name"
+        value={newProduct.name}
+        onChange={handleChange}
+        placeholder="Product Name"
+        className="w-full p-2 border rounded mt-2"
+      />
+      <input
+        type="number"
+        name="price"
+        value={newProduct.price}
+        onChange={handleChange}
+        placeholder="Price"
+        className="w-full p-2 border rounded mt-2"
+        min={0}
+      />
+      <input
+        type="number"
+        name="quantity"
+        value={newProduct.quantity}
+        onChange={handleChange}
+        placeholder="Quantity"
+        className="w-full p-2 border rounded mt-2"
+        min={0}
+      />
+      <button
+        onClick={handleCreateProduct}
+        className="w-full bg-[#ffd495] text-black p-2 rounded mt-2"
+      >
+        Create Product
       </button>
     </div>
   );

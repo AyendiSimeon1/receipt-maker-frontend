@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 interface Product {
   _id: string;
@@ -20,6 +21,17 @@ const initialState: ProductState = {
   loading: false,
   error: null
 };
+
+export const fetchProducts = createAsyncThunk('products/fetchProducts', async () =>{
+  try {
+    const response = await axios.get('http://127.0.0.1:3004/product/get-products');
+    console.log(response.data.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+  
+});
 
 const productSlice = createSlice({
   name: 'product',

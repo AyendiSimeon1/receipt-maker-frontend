@@ -1,13 +1,13 @@
 import React from 'react';
 
  interface Product {
-    id: string;
+    _id: string;
     name: string;
     price: number;
     quantity: number;
   }
    interface Purchase {
-    id: string;
+    _id: string;
     productId: string;
     quantity: number;
     totalPrice: number;
@@ -16,18 +16,18 @@ import React from 'react';
 
 interface ReceiptProps {
   purchase: Purchase;
-  product: Product | undefined;
+  //product: Product;
 }
 
-const Receipt: React.FC<ReceiptProps> = ({ purchase, product }) => {
-  if (!product) return null;
+const Receipt: React.FC<ReceiptProps> = ({ purchase }) => {
+  // if (!product) return null;
 
   return (
     <div className="mt-8 p-4 border rounded">
       <h3 className="text-xl font-semibold mb-2">Receipt</h3>
-      <p>Product: {product.name}</p>
+      {/* <p>Product: {product.name}</p>
       <p>Quantity: {purchase.quantity}</p>
-      <p>Price per unit: ${product.price}</p>
+      <p>Price per unit: ${product.price}</p> */}
       <p>Total: ${purchase.totalPrice}</p>
       <p>Date: {new Date(purchase.date).toLocaleString()}</p>
       <button 
