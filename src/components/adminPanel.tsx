@@ -14,6 +14,7 @@ export interface Product {
   name: string;
   price: number;
   quantity: number;
+  
 }
 
 export interface Purchase {
@@ -22,6 +23,7 @@ export interface Purchase {
   quantity: number;
   totalPrice: number;
   date: string;
+  customerName: string; 
 }
 
 const API_BASE_URL = 'http://localhost:3004';
@@ -57,7 +59,7 @@ const AdminPanel: React.FC = () => {
     }
   };
 
-  const handlePurchase = (quantity: number) => {
+  const handlePurchase = (quantity: number, customerName: string) => {
     if (selectedProduct) {
       const purchase: Purchase = {
         _id: Date.now().toString(),
@@ -65,13 +67,12 @@ const AdminPanel: React.FC = () => {
         quantity: quantity,
         totalPrice: selectedProduct.price * quantity,
         date: new Date().toISOString(),
+        customerName: customerName, // Capture customerName here
       };
-      // Dispatch the purchase action if needed
-      // dispatch(makePurchase(purchase));
       setLastPurchase(purchase);
-      setSelectedProduct(null);
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-[#f8f5f1] flex flex-col p-4">
@@ -100,15 +101,17 @@ const AdminPanel: React.FC = () => {
             products={products}
             onSelectProduct={setSelectedProduct}
           />
+          
           <PurchaseForm
             selectedProduct={selectedProduct}
             onPurchase={handlePurchase}
             onCreateProduct={handleCreateProduct}
           />
+
         </div>
         
-        {lastPurchase && (
-          <Receipt purchase={lastPurchase} />
+        {lastPurchase && selectedProduct && (
+          <Receipt purchase={lastPurchase} product={selectedProduct} />
         )}
       </main>
       

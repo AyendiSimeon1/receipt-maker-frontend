@@ -1,29 +1,27 @@
 import React, { useState } from 'react';
 
 type Product = {
-  _id: string
-  name: string
-  price: number
-  quantity: number
-}
+  _id: string;
+  name: string;
+  price: number;
+  quantity: number;
+};
 
 interface PurchaseFormProps {
   selectedProduct: Product | null;
-  onPurchase: (quantity: number) => void;
-  onCreateProduct: (product: Product) => void; // Updated to accept a product parameter
+  onPurchase: (quantity: number, customerName: string) => void;
+  onCreateProduct: (product: Product) => void;
 }
 
 const PurchaseForm: React.FC<PurchaseFormProps> = ({ selectedProduct, onPurchase, onCreateProduct }) => {
   const [quantity, setQuantity] = useState(1);
-
-  // State for creating a new product
+  const [customerName, setCustomerName] = useState<string>('');
   const [newProduct, setNewProduct] = useState({
     name: '',
     price: 0,
     quantity: 0,
   });
 
-  // Handle product creation input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setNewProduct({
@@ -32,15 +30,15 @@ const PurchaseForm: React.FC<PurchaseFormProps> = ({ selectedProduct, onPurchase
     });
   };
 
-  // Handle create product form submission
   const handleCreateProduct = () => {
     if (newProduct.name && newProduct.price > 0 && newProduct.quantity > 0) {
       const productToCreate = {
-        _id: Date.now().toString(), // Temporary ID; replace with actual logic if needed
+        _id: Date.now().toString(),
         ...newProduct,
+      
       };
       onCreateProduct(productToCreate);
-      setNewProduct({ name: '', price: 0, quantity: 0 }); // Clear form after submission
+      setNewProduct({ name: '', price: 0, quantity: 0 });
     } else {
       alert('Please fill in all fields correctly.');
     }
@@ -52,16 +50,23 @@ const PurchaseForm: React.FC<PurchaseFormProps> = ({ selectedProduct, onPurchase
     <div>
       <h3 className="text-xl font-semibold mb-2">Make Purchase</h3>
       <p>{selectedProduct.name} - ${selectedProduct.price}</p>
-      <input 
-        type="number" 
-        value={quantity} 
+      <input
+        type="number"
+        value={quantity}
         onChange={(e) => setQuantity(Number(e.target.value))}
         min={1}
         max={selectedProduct.quantity}
         className="w-full p-2 border rounded mt-2"
       />
-      <button 
-        onClick={() => onPurchase(quantity)}
+      <input
+        type="text"
+        value={customerName}
+        onChange={(e) => setCustomerName(e.target.value)}
+        placeholder="Customer Name"
+        className="w-full p-2 border rounded mt-2"
+      />
+      <button
+        onClick={() => onPurchase(quantity, customerName)}
         className="w-full bg-[#ffd495] text-black p-2 rounded mt-2"
       >
         Purchase
