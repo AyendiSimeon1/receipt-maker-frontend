@@ -7,40 +7,39 @@ type Product = {
   quantity: number
 }
 
+
 interface PurchaseFormProps {
   selectedProduct: Product | null;
   onPurchase: (quantity: number) => void;
-  onCreateProduct: (product: Product) => void; // Updated to accept a product parameter
-}
+  onCreateProduct: (product: Product) => void; 
 
 const PurchaseForm: React.FC<PurchaseFormProps> = ({ selectedProduct, onPurchase, onCreateProduct }) => {
   const [quantity, setQuantity] = useState(1);
-
-  // State for creating a new product
+  const [ customerName, setCustomerName] = useState<string>('');
   const [newProduct, setNewProduct] = useState({
     name: '',
     price: 0,
     quantity: 0,
   });
 
-  // Handle product creation input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setNewProduct({
       ...newProduct,
       [name]: name === 'price' || name === 'quantity' ? Number(value) : value,
+      
     });
   };
 
-  // Handle create product form submission
+
   const handleCreateProduct = () => {
     if (newProduct.name && newProduct.price > 0 && newProduct.quantity > 0) {
       const productToCreate = {
-        _id: Date.now().toString(), // Temporary ID; replace with actual logic if needed
+        _id: Date.now().toString(), 
         ...newProduct,
       };
       onCreateProduct(productToCreate);
-      setNewProduct({ name: '', price: 0, quantity: 0 }); // Clear form after submission
+      setNewProduct({ name: '', price: 0, quantity: 0 }); 
     } else {
       alert('Please fill in all fields correctly.');
     }

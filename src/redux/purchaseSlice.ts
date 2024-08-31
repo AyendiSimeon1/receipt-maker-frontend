@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 interface Product {
   _id: string;
@@ -12,6 +13,7 @@ interface Purchase {
   products: Product[];
   totalAmount: number;
   receiptNumber: string;
+  date: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -27,6 +29,15 @@ const initialState: PurchaseState = {
   loading: false,
   error: null
 };
+
+export const createPurchase = createAsyncThunk('purchase/createPurchase', async (purchase: Purchase) => {
+    try {
+        const response = await axios.post('http://127.0.0.1:3004/purchase', purchase);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+})
 
 const purchaseSlice = createSlice({
   name: 'purchase',
