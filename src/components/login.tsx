@@ -16,6 +16,8 @@ const LoginPage: React.FC = () => {
     password: ''
   });
 
+  const [ error, setError ] = useState<string | null>(null);
+
   const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -26,13 +28,21 @@ const LoginPage: React.FC = () => {
       const response = await axios.post('http://127.0.0.1:3004/auth/login', formData);
       if (response.status === 200) {
         console.log('Login Successful');
-        dispatch(loginSuccess(response.data)); // Assuming the response contains user data
+        dispatch(loginSuccess(response.data)); 
+        console.log(response.data);
         navigate('/admin');
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        // dispatch(loginFailure(error.message));
+        setError(error.message);
+      } else {
+        console.error('An unknown error occurred:', error);
+        setError('An unknown error occurred');
+      }
     }
-  };
+  }
+    ;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -49,7 +59,11 @@ const LoginPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#f8f5f1] flex flex-col justify-center items-center p-4">
       <header className="w-full max-w-md flex justify-between items-center mb-8">
-        {/* Header content if needed */}
+      {error && ( 
+            <div className="">
+              {error}
+            </div>
+          )}
       </header>
 
       <main className="bg-white rounded-3xl shadow-lg p-8 w-full max-w-md">
