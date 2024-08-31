@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { addProduct, updateProduct } from '../redux/productSlice';
+// import { addProduct } from '../redux/productSlice';
 import ProductList from '../components/productList';
 import PurchaseForm from '../components/purchaseForm';
 import Receipt from '../components/receipt';
-import axios from 'axios';
+// import axios from 'axios';
 import { fetchProducts } from '../redux/productSlice';
 import { useAppDispatch } from '../store';
 
@@ -26,16 +26,16 @@ export interface Purchase {
   customerName: string; 
 }
 
-const API_BASE_URL = 'http://localhost:3004';
+// const API_BASE_URL = 'http://localhost:3004';
 
 const AdminPanel: React.FC = () => {
   const dispatch = useAppDispatch();
   const { products } = useSelector((state: RootState) => state.product);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [lastPurchase, setLastPurchase] = useState<Purchase | null>(null);
-  const [lastProduct, setLastProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  // const [lastProduct, setLastProduct] = useState<Product | null>(null);
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const [error, setError] = useState<string | null>(null);
   const state = useSelector((state: RootState) => state);
 
   console.log({ 'Data stored': products });
@@ -45,19 +45,19 @@ const AdminPanel: React.FC = () => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const handleCreateProduct = async (product: Product) => {
-    try {
-      const response = await axios.post(`${API_BASE_URL}/createProduct`, product);
-      if (response.status === 201) {
-        console.log('Product created successfully');
-        dispatch(addProduct(response.data));
-        setLastProduct(response.data);
-      }
-    } catch (error) {
-      console.error(error);
-      setError('Failed to create product. Please try again later.');
-    }
-  };
+  // const handleCreateProduct = async (product: Product) => {
+  //   try {
+  //     const response = await axios.post(`${API_BASE_URL}/createProduct`, product);
+  //     if (response.status === 201) {
+  //       console.log('Product created successfully');
+  //       dispatch(addProduct(response.data));
+  //       setLastProduct(response.data);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     setError('Failed to create product. Please try again later.');
+  //   }
+  // };
 
   const handlePurchase = (quantity: number, customerName: string) => {
     if (selectedProduct) {
@@ -84,7 +84,7 @@ const AdminPanel: React.FC = () => {
       <main className="bg-white rounded-3xl shadow-lg p-8 w-full max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold mb-4">Inventory Management</h2>
 
-        {loading && (
+        {/* {loading && (
           <div className="flex justify-center items-center">
             <div className="w-12 h-12 border-4 border-t-4 border-[#ffd495] border-solid rounded-full animate-spin"></div>
           </div>
@@ -94,7 +94,7 @@ const AdminPanel: React.FC = () => {
           <div className="bg-red-100 text-red-800 p-4 mb-4 rounded">
             {error}
           </div>
-        )}
+        )} */}
 
         <div className="grid grid-cols-2 gap-8">
           <ProductList
