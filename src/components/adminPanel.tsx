@@ -6,7 +6,8 @@ import PurchaseForm from '../components/purchaseForm';
 import Receipt from '../components/receipt';
 import { fetchProducts } from '../redux/productSlice';
 import { useAppDispatch } from '../store';
-import { logout } from '../redux/authSlice'; // Assuming logout is handled in authSlice
+import { logout } from '../redux/authSlice'; 
+import { useNavigate } from 'react-router-dom'; 
 
 export interface Product {
   _id: string;
@@ -26,6 +27,7 @@ export interface Purchase {
 
 const AdminPanel: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { products } = useSelector((state: RootState) => state.product);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [lastPurchase, setLastPurchase] = useState<Purchase | null>(null);
