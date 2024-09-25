@@ -9,38 +9,39 @@ interface FormData {
 }
 
 const SignupPage: React.FC = () => {
-  // Initialize formData with default values to avoid null or undefined
   const [formData, setFormData] = useState<FormData>({
     username: '',
     email: '',
     password: ''
   });
+  
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false); // For loader
+  const [error, setError] = useState<string | null>(null); // For error message
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    
+    setLoading(true); // Show loader
+    setError(null); // Reset error message
 
     try {
-      
       const response = await axios.post('http://127.0.0.1:3004/auth/signup', formData);
 
-      if (response.status === 201) { 
+      if (response.status === 201) {
         console.log('Signup successful');
-        navigate('/login'); 
+        navigate('/login'); // Redirect to login page after successful signup
       }
 
     } catch (error: any) {
-      console.error(error);
+      setError(error.response?.data?.message || 'Signup failed. Please try again.'); // Set error message
+    } finally {
+      setLoading(false); // Hide loader
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
-    
     setFormData(prevState => ({
       ...prevState,
       [name]: value
@@ -49,13 +50,13 @@ const SignupPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#f8f5f1] flex flex-col justify-center items-center p-4">
-      <header className="w-full max-w-md flex justify-between items-center mb-8">
-        
-      </header>
+      <header className="w-full max-w-md flex justify-between items-center mb-8"></header>
 
       <main className="bg-white rounded-3xl shadow-lg p-8 w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4">User Signup</h2>
         <p className="mb-6">Create your account to get started</p>
+
+        {error && <div className="text-red-500 mb-4">{error}</div>} {/* Display error message */}
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -99,8 +100,16 @@ const SignupPage: React.FC = () => {
             </button>
           </div>
 
-          <button type="submit" className="w-full bg-[#ffd495] text-black p-2 rounded">
-            Sign Up
+          <button
+            type="submit"
+            className="w-full bg-[#ffd495] text-black p-2 rounded flex justify-center items-center"
+            disabled={loading} // Disable the button while loading
+          >
+            {loading ? ( // Show loader while loading
+              <span className="loader"></span> // You can style this with CSS
+            ) : (
+              'Sign Up'
+            )}
           </button>
         </form>
 

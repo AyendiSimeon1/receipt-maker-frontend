@@ -30,7 +30,7 @@ const LoginPage: React.FC = () => {
         console.log('Login Successful');
         dispatch(loginSuccess(response.data)); 
         console.log(response.data);
-        navigate('/admin');
+        navigate('/');
       }
     } catch (error: unknown) {
       if (error instanceof Error) {

@@ -37,7 +37,7 @@ const Receipt: React.FC<ReceiptProps> = ({ purchase, product }) => {
     <p className="text-center">Thank you for your purchase!</p>
     <button 
       onClick={() => window.print()}
-      className="mt-4 bg-blue-500 text-white px-4 py-2 rounded block w-full"
+      className="mt-4 bg-[#ffd495] text-white px-4 py-2 rounded block w-full"
     >
       Print Receipt
     </button>
