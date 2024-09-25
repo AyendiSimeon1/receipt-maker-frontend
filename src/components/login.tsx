@@ -25,7 +25,7 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:3004/auth/login', formData);
+      const response = await axios.post('https://receipt-maker.onrender.com/auth/login', formData);
       if (response.status === 200) {
         console.log('Login Successful');
         dispatch(loginSuccess(response.data)); 

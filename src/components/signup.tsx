@@ -26,7 +26,7 @@ const SignupPage: React.FC = () => {
     setError(null); // Reset error message
 
     try {
-      const response = await axios.post('http://127.0.0.1:3004/auth/signup', formData);
+      const response = await axios.post('https://receipt-maker.onrender.com/auth/signup', formData);
 
       if (response.status === 201) {
         console.log('Signup successful');

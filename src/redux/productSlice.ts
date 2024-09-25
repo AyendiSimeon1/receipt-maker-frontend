@@ -30,7 +30,7 @@ export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://127.0.0.1:3004/product/get-products');
+      const response = await axios.get('https://receipt-maker.onrender.com/product/get-products');
       console.log('Fetched data:', response.data);
       return response.data.data.products;
     } catch (error) {

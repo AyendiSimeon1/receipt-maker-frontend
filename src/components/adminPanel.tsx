@@ -31,7 +31,7 @@ const AdminPanel: React.FC = () => {
   const { products } = useSelector((state: RootState) => state.product);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [lastPurchase, setLastPurchase] = useState<Purchase | null>(null);
-  const [showCreateProductForm, setShowCreateProductForm] = useState<boolean>(false); // Toggle for create product form
+  // const [showCreateProductForm, setShowCreateProductForm] = useState<boolean>(false); // Toggle for create product form
   const state = useSelector((state: RootState) => state);
 
   console.log({ 'Data stored': products });
@@ -97,13 +97,7 @@ const AdminPanel: React.FC = () => {
           />
         </div>
         
-        {showCreateProductForm && (
-          <div className="mt-4">
-            {/* Insert Create Product form or component here */}
-            <h3>Create a new product</h3>
-            {/* Replace with your actual form */}
-          </div>
-        )}
+        
 
         {lastPurchase && selectedProduct && (
           <Receipt purchase={lastPurchase} product={selectedProduct} />

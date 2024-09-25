@@ -32,7 +32,7 @@ const initialState: PurchaseState = {
 
 export const createPurchase = createAsyncThunk('purchase/createPurchase', async (purchase: Purchase) => {
     try {
-        const response = await axios.post('http://127.0.0.1:3004/purchase', purchase);
+        const response = await axios.post('https://receipt-maker.onrender.com/purchase', purchase);
         return response.data;
     } catch (error) {
         console.error(error);
