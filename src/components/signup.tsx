@@ -1,6 +1,8 @@
 import React, { useState, FormEvent } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { TailSpin } from 'react-loader-spinner';
+
 
 interface FormData {
   username: string;
@@ -23,14 +25,14 @@ const SignupPage: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true); // Show loader
-    setError(null); // Reset error message
+    setError(null); // 
 
     try {
       const response = await axios.post('https://receipt-maker.onrender.com/auth/signup', formData);
 
       if (response.status === 201) {
         console.log('Signup successful');
-        navigate('/login'); // Redirect to login page after successful signup
+        navigate('/login'); 
       }
 
     } catch (error: any) {
@@ -106,7 +108,7 @@ const SignupPage: React.FC = () => {
             disabled={loading} // Disable the button while loading
           >
             {loading ? ( // Show loader while loading
-              <span className="loader"></span> // You can style this with CSS
+              <TailSpin color="#00BFFF" height={80} width={80} />// You can style this with CSS
             ) : (
               'Sign Up'
             )}
