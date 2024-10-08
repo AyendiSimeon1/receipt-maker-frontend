@@ -121,7 +121,7 @@ const SignupPage: React.FC = () => {
       </main>
 
       <footer className="mt-8 text-sm text-gray-500">
-        Copyright @wework 2022 | Privacy Policy
+        Copyright Double Glory Stores 2024| Privacy Policy
       </footer>
     </div>
   );

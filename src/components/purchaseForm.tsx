@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+
 type Product = {
   _id: string;
   name: string;
@@ -21,7 +22,7 @@ const PurchaseForm: React.FC<PurchaseFormProps> = ({ selectedProduct, onPurchase
   return (
     <div>
       <h3 className="text-xl font-semibold mb-2">Make Purchase</h3>
-      <p>{selectedProduct.name} - ${selectedProduct.price}</p>
+      <p>{selectedProduct.name} - ₦{selectedProduct.price}</p>
       <input
         type="number"
         value={quantity}

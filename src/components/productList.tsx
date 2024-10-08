@@ -15,27 +15,34 @@ interface ProductListProps {
 
 const ProductList: React.FC<ProductListProps> = ({ products, onSelectProduct }) => {
   return (
-    <div>
-      <h3 className="text-xl font-semibold mb-4">Products</h3>
-      <h2>Hello World</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div className="container mx-auto p-4">
+      <h2 className="text-3xl font-bold mb-6">Products</h2>
+      <div className="space-y-6">
         {products.map(product => (
-          <div 
-            key={product._id} 
-            className="border border-gray-300 rounded-lg overflow-hidden shadow-md"
+          <div
+            key={product._id}
+            className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-[1.02] flex flex-col md:flex-row"
           >
-            {/* <img 
-              src={product.imageUrl || 'default-image-url.jpg'} 
-              alt={product.name} 
-              className="w-full h-48 object-cover" 
-            /> */}
-            <div className="p-4">
-              <h4 className="text-lg font-bold">{product.name}</h4>
-              <p className="text-gray-700">${product.price}</p>
-              <p className="text-gray-500">Qty: {product.quantity}</p>
-              <button 
-                onClick={() => onSelectProduct(product)} 
-                className="mt-4 bg-[#ffd495] text-black px-4 py-2 rounded-md w-full"
+            {product.imageUrl ? (
+              <img
+                src={product.imageUrl}
+                alt={product.name}
+                className="w-full md:w-1/3 h-64 md:h-auto object-cover"
+              />
+            ) : (
+              <div className="w-full md:w-1/3 h-64 md:h-auto bg-gray-200 flex items-center justify-center text-gray-500">
+                No Image
+              </div>
+            )}
+            <div className="p-6 md:p-8 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 className="text-2xl font-semibold mb-2">{product.name}</h3>
+                <p className="text-gray-700 text-xl mb-4">₦{product.price.toFixed(2)}</p>
+                <p className="text-gray-600 text-lg">Quantity: {product.quantity}</p>
+              </div>
+              <button
+                onClick={() => onSelectProduct(product)}
+                className="mt-6 bg-[#ffd495] text-black px-8 py-4 rounded-md hover:bg-[#ffc680] transition-colors text-xl font-medium self-start"
               >
                 Select
               </button>

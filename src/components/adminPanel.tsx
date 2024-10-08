@@ -8,7 +8,8 @@ import { fetchProducts } from '../redux/productSlice';
 import { useAppDispatch } from '../store';
 import { logout } from '../redux/authSlice'; 
 import { useNavigate } from 'react-router-dom'; 
-
+import doubleglory from '../assets/double-glory.jpg';
+import { Link } from 'react-router-dom';
 export interface Product {
   _id: string;
   name: string;
@@ -67,13 +68,21 @@ const AdminPanel: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#f8f5f1] flex flex-col p-4">
       <header className="w-full max-w-4xl mx-auto flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Store Admin</h1>
+       
+        <img src={doubleglory} alt="Example" className="w-64 h-auto rounded-md" />
         <div>
           <button 
             onClick={handleCreateProductClick} 
             className="bg-[#ffd495] text-white px-4 py-2 rounded-md mr-4">
             Create Product
           </button>
+          <Link to='/transactions'>
+          <button 
+            
+            className="bg-[#ffd495] text-white px-4 py-2 rounded-md mr-4">
+            All Transactions
+          </button>
+          </Link>
           <button 
             onClick={handleLogout} 
             className="bg-[#ffd495] text-black px-4 py-2 rounded-md">
@@ -95,6 +104,8 @@ const AdminPanel: React.FC = () => {
             selectedProduct={selectedProduct}
             onPurchase={handlePurchase}
           />
+
+          
         </div>
         
         
@@ -105,7 +116,7 @@ const AdminPanel: React.FC = () => {
       </main>
 
       <footer className="mt-8 text-sm text-gray-500 text-center">
-        Copyright @Razor 2024 | Privacy Policy
+        Copyright @Double Glory Store 2024 | Privacy Policy
       </footer>
     </div>
   );
