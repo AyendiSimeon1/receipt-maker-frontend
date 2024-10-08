@@ -19,7 +19,7 @@ const TransactionComponent: React.FC = () => {
   useEffect(() => {
     const fetchPurchases = async () => {
       try {
-        const response = await axios.get('http://localhost:3004/product/get-purchases'); // Update with your endpoint URL
+        const response = await axios.get('https://receipt-maker.onrender.com/product/get-purchases'); // Update with your endpoint URL
         setPurchases(response.data);
         setLoading(false);
       } catch (err) {

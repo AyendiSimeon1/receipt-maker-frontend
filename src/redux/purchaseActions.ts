@@ -5,7 +5,7 @@ import axios from 'axios';
 import { RootState } from '../store'; // Assume you have this type defined
 import { Purchase } from '../components/adminPanel';
 
-const baseUrl = 'http://localhost:3004/product/save-receipt'
+const baseUrl = 'https://receipt-maker.onrender.com/product/save-receipt'
 
 export const savePurchase = (
   purchase: Purchase
