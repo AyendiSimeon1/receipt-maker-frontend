@@ -5,7 +5,6 @@ export interface Product {
   name: string;
   price: number;
   quantity: number;
-  imageUrl?: string; // Optional image URL
 }
 
 interface ProductListProps {
@@ -24,17 +23,6 @@ const ProductList: React.FC<ProductListProps> = ({ products, onSelectProduct }) 
             key={product._id}
             className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-[1.02] flex flex-col w-full"
           >
-            {product.imageUrl ? (
-              <img
-                src={product.imageUrl}
-                alt={product.name}
-                className="w-full h-64 object-cover"
-              />
-            ) : (
-              <div className="w-full h-64 bg-gray-200 flex items-center justify-center text-gray-500">
-                No Image
-              </div>
-            )}
             <div className="p-6 flex-grow flex flex-col justify-between">
               <div>
                 <h3 className="text-2xl font-semibold mb-2">{product.name}</h3>
