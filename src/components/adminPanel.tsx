@@ -92,28 +92,24 @@ const AdminPanel: React.FC = () => {
       </header>
 
       <main className="bg-white rounded-3xl shadow-lg p-8 w-full max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold mb-4">Inventory Management</h2>
+  <h2 className="text-2xl font-bold mb-4">Inventory Management</h2>
 
-        <div className="grid grid-cols-2 gap-8">
-          <ProductList
-            products={products}
-            onSelectProduct={setSelectedProduct}
-          />
-          
-          <PurchaseForm
-            selectedProduct={selectedProduct}
-            onPurchase={handlePurchase}
-          />
+  {/* Adjusting grid behavior */}
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <ProductList
+      products={products}
+      onSelectProduct={setSelectedProduct}
+    />
+    <PurchaseForm
+      selectedProduct={selectedProduct}
+      onPurchase={handlePurchase}
+    />
+  </div>
 
-          
-        </div>
-        
-        
-
-        {lastPurchase && selectedProduct && (
-          <Receipt purchase={lastPurchase} product={selectedProduct} />
-        )}
-      </main>
+  {lastPurchase && selectedProduct && (
+    <Receipt purchase={lastPurchase} product={selectedProduct} />
+  )}
+</main>
 
       <footer className="mt-8 text-sm text-gray-500 text-center">
         Copyright @Double Glory Store 2024 | Privacy Policy
